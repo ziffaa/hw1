@@ -14,11 +14,7 @@ void person::inputinfo()
 		correct = true;
 		cout << "enter phone number: ";
 		cin >> phonenumber;
-		int len = 0;
-		while (phonenumber[len] != '\0')
-		{
-			len++;
-		}
+		int len = strlen(phonenumber);
 		if (len != 12)
 		{
 			cout << incorrectphone;
@@ -198,13 +194,13 @@ void savefile()
 
 void loadfile()
 {
-	std::string line1, line2, line3, line4;
+	string line1, line2, line3, line4;
 	personcounter = 0;
-	std::ifstream in("book.txt");
+	ifstream in("book.txt");
 	if (in.is_open())
 	{
 
-		while (std::getline(in, line1) && std::getline(in, line2) && std::getline(in, line3) && std::getline(in, line4))
+		while (getline(in, line1) && getline(in, line2) && getline(in, line3) && getline(in, line4))
 		{
 			strcpy_s(book[personcounter].firstname, 100, line1.c_str());
 			strcpy_s(book[personcounter].surname, 100, line2.c_str());

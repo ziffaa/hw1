@@ -8,9 +8,9 @@ using namespace std;
 struct person
 {
 public:
-	char* firstname{ new char[100] };
-	char* surname{ new char[100] };
-	char* phonenumber{ new char[13] };
+	char* firstname{ new char[100]};
+	char* surname{ new char[100]};
+	char* phonenumber{ new char[13]};
 	double salary = 0;
 
 	void inputinfo();
