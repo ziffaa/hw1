@@ -22,15 +22,18 @@ int main()
 			printbook();
 			break;
 		case 4:
-			salarysearch();
+			asort();
 			break;
 		case 5:
-			surnamesearch();
+			salarysearch();
 			break;
 		case 6:
-			savefile();
+			surnamesearch();
 			break;
 		case 7:
+			savefile();
+			break;
+		case 8:
 			loadfile();
 			break;
 		default:

@@ -26,3 +26,5 @@ void surnamesearch();
 void savefile();
 void loadfile();
 void printmenu();
+void asort();
+void errormsgempty();

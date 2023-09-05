@@ -124,19 +124,27 @@ void removeperson()
 
 void printbook()
 {
+	if (personcounter == 0)
+	{
+		errormsgempty();
+		return;
+	}
 	for (int i = 0; i < personcounter; i++)
 	{
 		book[i].print();
 	}
-	int temp = 0;
-	cout << "Enter any character to continue: ";
-	cin >> temp;
+	system("pause");
 	system("CLS");
 	return;
 }
 
 void salarysearch()
 {
+	if (personcounter == 0)
+	{
+		errormsgempty();
+		return;
+	}
 	double min = 0;
 	double max = 0;
 	cout << "\nEnter minimum salary: ";
@@ -150,15 +158,18 @@ void salarysearch()
 			book[i].print();
 		}
 	}
-	int temp = 0;
-	cout << "\nEnter any character to continue: ";
-	cin >> temp;
+	system("pause");
 	system("CLS");
 	return;
 }
 
 void surnamesearch()
 {
+	if (personcounter == 0)
+	{
+		errormsgempty();
+		return;
+	}
 	char* surname{ new char[100] };
 	cout << "\nEnter surname: ";
 	cin >> surname;
@@ -214,14 +225,39 @@ void loadfile()
 	return;
 }
 
+void asort() {
+	for (int pass = 0; pass < personcounter - 1; pass++) {
+		for (int j = 0; j < personcounter - pass - 1; j++) {
+			int i = 0;
+			while (book[j].surname[i] != '\0' && book[j + 1].surname[i] != '\0' && book[j].surname[i] == book[j + 1].surname[i]) {
+				i++;
+			}
+			if (book[j].surname[i] > book[j + 1].surname[i]) {
+				person temp = book[j + 1];
+				book[j + 1] = book[j];
+				book[j] = temp;
+			}
+		}
+	}
+	printbook();
+}
 void printmenu()
 {
 	cout << "[1] - add person\n";
 	cout << "[2] - remove person\n";
 	cout << "[3] - print\n";
-	cout << "[4] - search by salary\n";
-	cout << "[5] - search by surname\n";
-	cout << "[6] - save to file\n";
-	cout << "[7] - load from file\n";
+	cout << "[4] - sort alphabetically\n";
+	cout << "[5] - search by salary\n";
+	cout << "[6] - search by surname\n";
+	cout << "[7] - save to file\n";
+	cout << "[8] - load from file\n";
 	cout << "choose action: ";
+}
+void errormsgempty()
+{
+	system("CLS");
+	cout << "ERROR: THE BOOK IS EMPTY\n";
+	system("pause");
+	system("CLS");
+	return;
 }
