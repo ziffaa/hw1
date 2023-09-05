@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void person::inputinfo()
+void employee::inputinfo()
 {
 	const char* incorrectphone = "INCORRECT PHONE NUMBER FORMAT\n";
 	cout << "\nenter first name: ";
@@ -62,11 +62,25 @@ void person::inputinfo()
 		}
 
 	} while (correct == false);
-	cout << "enter salary: ";
-	cin >> salary;
+	while (true)
+	{
+		cout << "enter salary: ";
+		cin >> salary;
+		if (cin.fail())
+		{
+			cout << "ERROR: INCORRECT VALUE\n";
+			cin.clear();
+			cin.ignore(100, '\n');
+			continue;
+		}
+		else
+		{
+			break;
+		}
+	}
 	cout << endl;
 }
-void person::print()
+void employee::print()
 {
 	cout << "\nfist name: " << firstname << endl;
 	cout << "surnname: " << surname << endl;
@@ -74,62 +88,66 @@ void person::print()
 	cout << "salary: $" << salary << "\n\n";
 }
 
-person book[50];
-int personcounter = 0;
+employee book[50];
+int employeecounter = 0;
 int action;
 
-void addperson()
+void addemployee()
 {
-	book[personcounter].inputinfo();
-	personcounter++;
+	book[employeecounter].inputinfo();
+	employeecounter++;
 	system("CLS");
 	return;
 }
 
-void removeperson()
+void removeemployee()
 {
-	if (personcounter == 0)
+	if (employeecounter == 0)
 	{
-		cout << "\nTHE BOOK IS EMPTY\n";
+		errormsgempty();
 		return;
 	}
-	cout << "\nselect the person you want to remove:\n";
-	for (int i = 0; i < personcounter; i++)
+	cout << "\nselect the employee you want to remove:\n";
+	for (int i = 0; i < employeecounter; i++)
 	{
 		cout << "[" << i + 1 << "]" << book[i].firstname << " " << book[i].surname << endl;
 	}
 	int n;
-	while (true) {
-		cin >> n;
-		if (n >= 1 && n <= personcounter)
-			return;
-		cout << "\nINCORRECT NUMBER\n";
-		cout << "select the person you want to remove:\n";
+	cin >> n;
+	if (cin.fail() || n <= 0 || n > employeecounter)
+	{
+		errormsgwrongvalue();
+		return;
 	}
-	bool confirm;
+	int confirm;
 	cout << "\nenter 1 to confirm, 0 to cancel: ";
 	cin >> confirm;
+	if (cin.fail() || confirm != 1 || confirm != 0)
+	{
+		errormsgwrongvalue();
+		return;
+	}
 	if (confirm == 0)
 	{
 		return;
 	}
-	for (int i = n; i < personcounter; i++)
+	for (int i = n; i < employeecounter; i++)
 	{
 		book[n - 1] = book[n];
 	}
-	personcounter--;
+	employeecounter--;
 	system("CLS");
 	return;
 }
 
 void printbook()
 {
-	if (personcounter == 0)
+	if (employeecounter == 0)
 	{
 		errormsgempty();
 		return;
 	}
-	for (int i = 0; i < personcounter; i++)
+	for (int i = 0; i < employeecounter; i++)
 	{
 		book[i].print();
 	}
@@ -140,7 +158,7 @@ void printbook()
 
 void salarysearch()
 {
-	if (personcounter == 0)
+	if (employeecounter == 0)
 	{
 		errormsgempty();
 		return;
@@ -149,9 +167,19 @@ void salarysearch()
 	double max = 0;
 	cout << "\nEnter minimum salary: ";
 	cin >> min;
+	if (cin.fail())
+	{
+		errormsgwrongvalue();
+		return;
+	}
 	cout << "Enter maximum salary: ";
 	cin >> max;
-	for (int i = 0; i < personcounter; i++)
+	if (cin.fail())
+	{
+		errormsgwrongvalue();
+		return;
+	}
+	for (int i = 0; i < employeecounter; i++)
 	{
 		if (book[i].salary >= min && book[i].salary <= max)
 		{
@@ -165,7 +193,7 @@ void salarysearch()
 
 void surnamesearch()
 {
-	if (personcounter == 0)
+	if (employeecounter == 0)
 	{
 		errormsgempty();
 		return;
@@ -173,7 +201,7 @@ void surnamesearch()
 	char* surname{ new char[100] };
 	cout << "\nEnter surname: ";
 	cin >> surname;
-	for (int i = 0; i < personcounter; i++)
+	for (int i = 0; i < employeecounter; i++)
 	{
 		if (book[i].surname == surname)
 		{
@@ -190,7 +218,7 @@ void savefile()
 	out.open("book.txt");
 	if (out.is_open())
 	{
-		for (int i = 0; i < personcounter; i++)
+		for (int i = 0; i < employeecounter; i++)
 		{
 			out << book[i].firstname << endl;
 			out << book[i].surname << endl;
@@ -206,18 +234,18 @@ void savefile()
 void loadfile()
 {
 	string line1, line2, line3, line4;
-	personcounter = 0;
+	employeecounter = 0;
 	ifstream in("book.txt");
 	if (in.is_open())
 	{
 
 		while (getline(in, line1) && getline(in, line2) && getline(in, line3) && getline(in, line4))
 		{
-			strcpy_s(book[personcounter].firstname, 100, line1.c_str());
-			strcpy_s(book[personcounter].surname, 100, line2.c_str());
-			strcpy_s(book[personcounter].phonenumber, 100, line3.c_str());
-			book[personcounter].salary = stod(line4);
-			personcounter++;
+			strcpy_s(book[employeecounter].firstname, 100, line1.c_str());
+			strcpy_s(book[employeecounter].surname, 100, line2.c_str());
+			strcpy_s(book[employeecounter].phonenumber, 100, line3.c_str());
+			book[employeecounter].salary = stod(line4);
+			employeecounter++;
 		}
 	}
 	in.close();
@@ -226,14 +254,14 @@ void loadfile()
 }
 
 void asort() {
-	for (int pass = 0; pass < personcounter - 1; pass++) {
-		for (int j = 0; j < personcounter - pass - 1; j++) {
+	for (int pass = 0; pass < employeecounter - 1; pass++) {
+		for (int j = 0; j < employeecounter - pass - 1; j++) {
 			int i = 0;
 			while (book[j].surname[i] != '\0' && book[j + 1].surname[i] != '\0' && book[j].surname[i] == book[j + 1].surname[i]) {
 				i++;
 			}
 			if (book[j].surname[i] > book[j + 1].surname[i]) {
-				person temp = book[j + 1];
+				employee temp = book[j + 1];
 				book[j + 1] = book[j];
 				book[j] = temp;
 			}
@@ -243,8 +271,8 @@ void asort() {
 }
 void printmenu()
 {
-	cout << "[1] - add person\n";
-	cout << "[2] - remove person\n";
+	cout << "[1] - add employee\n";
+	cout << "[2] - remove employee\n";
 	cout << "[3] - print\n";
 	cout << "[4] - sort alphabetically\n";
 	cout << "[5] - search by salary\n";
@@ -257,6 +285,16 @@ void errormsgempty()
 {
 	system("CLS");
 	cout << "ERROR: THE BOOK IS EMPTY\n";
+	system("pause");
+	system("CLS");
+	return;
+}
+void errormsgwrongvalue()
+{
+	system("CLS");
+	cout << "\nERROR: INCORRECT VALUE\n\n";
+	cin.clear();
+	cin.ignore(100, '\n');
 	system("pause");
 	system("CLS");
 	return;

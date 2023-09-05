@@ -13,10 +13,10 @@ int main()
 		switch (action)
 		{
 		case 1:
-			addperson();
+			addemployee();
 			break;
 		case 2:
-			removeperson();
+			removeemployee();
 			break;
 		case 3:
 			printbook();
@@ -37,7 +37,7 @@ int main()
 			loadfile();
 			break;
 		default:
-			cout << "\nincorrect option\n\n";
+			errormsgwrongvalue();
 			break;
 		}
 	}
